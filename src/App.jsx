@@ -5,10 +5,11 @@ import SalesInvoice from "./Pages/SalesInvoice";
 import Customer from "./Components/CreateCustomer/Customer";
 import ProductPage from "./Pages/ProductPage";
 import SalesDashboard from "./Pages/SalesDashboard";
+import ReceivablesTable from "./Components/Reciveable/ReceivablesTable";
 
 const Dashboard = () => <h1 className="text-3xl font-bold">Dashboard</h1>;
 const Payable = () => <h1 className="text-3xl font-bold">Payable</h1>;
-const Receivable = () => <h1 className="text-3xl font-bold">Receivable</h1>;
+
 
 const App = () => {
   return (
@@ -22,7 +23,7 @@ const App = () => {
           <Route path="invoice" element={<SalesInvoice />} />
            <Route path="create/customer" element={<Customer />} />
           <Route path="payable" element={<Payable />} />
-          <Route path="receivable" element={<Receivable />} />
+          <Route path="receivable" element={<ReceivablesTable />} />
           <Route path="*" element={<h1 className="text-3xl font-bold">404 Not Found</h1>} />
         </Route>
       </Routes>

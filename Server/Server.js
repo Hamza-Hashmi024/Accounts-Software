@@ -6,6 +6,7 @@ const SalesRouter = require("./routes/SalesRoutes");
 const CustomerRouter = require("./routes/CustomerRoutes");
 const ProductsRouter = require("./routes/ProductRoutes");
 const TaxRouter = require("./routes/TaxRoutes");
+const receivableRoutes = require("./routes/reciveableRoutes")
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -20,6 +21,8 @@ app.use("/api/customer", CustomerRouter);
 app.use("/api/sales", SalesRouter);
 app.use("/api/product", ProductsRouter);
 app.use("/api/tax", TaxRouter);
+app.use("/api/reciveable", receivableRoutes)
+ 
 
 app.get("/", (req, res) => {
   res.send(`Server s running ON Port   ${PORT}`);

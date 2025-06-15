@@ -330,24 +330,41 @@ export const GetSalesAverage = createAsyncThunk(
 
 export const GetMonthlySalesOverView = createAsyncThunk(
   "sales/monthlySalesOverView",
-  async (_, thunkAPI) =>{
+  async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${BASE_URL}/sales/monthlysales`);
       return response.data;
     } catch {
-      return thunkAPI.rejectWithValue("Failed to fetch monthly sales over view");
+      return thunkAPI.rejectWithValue(
+        "Failed to fetch monthly sales over view"
+      );
     }
   }
-)
+);
 
-export const GetProductSalesOverView  = createAsyncThunk(
+export const GetProductSalesOverView = createAsyncThunk(
   "sales/productSalesOverView",
-  async (_, thunkAPI) =>{
+  async (_, thunkAPI) => {
     try {
       const response = await axios.get(`${BASE_URL}/product/productOverview`);
       return response.data;
-    }catch {
-      return thunkAPI.rejectWithValue("Failed to fetch product sales over view");
+    } catch {
+      return thunkAPI.rejectWithValue(
+        "Failed to fetch product sales over view"
+      );
     }
   }
-)
+);
+
+export const GetReciveAble = createAsyncThunk(
+  "sales/reciveAble",
+  async (filters = {}, thunkAPI) => {
+    try {
+      const query = new URLSearchParams(filters).toString();
+      const response = await axios.get(`${BASE_URL}/reciveable/recivable?${query}`);
+      return response.data;
+    } catch (error) {
+     return thunkAPI.rejectWithValue(error.response?.data?.error || "Failed to fetch receivables");
+    }
+  }
+);

@@ -38,7 +38,7 @@ export const MenuItems = [
   },
   {
     text: "Receivable",
-    to: "/receivable",
+    to: "receivable",
     Icon: <GiTargetDummy style={{ color: colors.SOLUTYICS_PURPLE }} />,
   },
 ];
