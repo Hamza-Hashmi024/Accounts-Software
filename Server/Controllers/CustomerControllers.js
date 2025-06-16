@@ -41,23 +41,6 @@ const createCustomer = (req, res) => {
   );
 };
 
-// const getCustomer = (req, res) => {
-//   const { id } = req.params;
-
-//   const query = `SELECT * FROM customers WHERE id = ?`;
-
-//   db.query(query, [id], (err, results) => {
-//     if (err) {
-//       console.error('Error fetching customer:', err.message);
-//       return res.status(500).json({ error: 'Database error' });
-//     } else if (results.length === 0) {
-//       return res.status(404).json({ error: 'Customer not found' });
-//     }
-
-//     res.status(200).json(results[0]);
-//   });
-// };
-
 const getCustomerByIdOrName = (req, res) => {
   const { id, name } = req.query;
 
@@ -94,16 +77,6 @@ const getCustomerByIdOrName = (req, res) => {
     res.status(200).json(results);
   });
 };
-
-// // get Al  customer
-// const getAllCustomers = (req, res) => {
-//   const query = "SELECT * FROM customers";
-//   db.query(query, (err, results) => {
-//     if (err) {
-//       console.log("Error fetching Cistomers :", err.message);
-//     } else res.status(200).json(results);
-//   });
-// };
 
 const getAllCustomers = (req, res) => {
   let { id, name } = req.query;
@@ -223,5 +196,6 @@ module.exports = {
   updateCustomerById,
   DeleteCustomerById,
   getCustomerName,
-  GetTotalNumOfCustomers
+  GetTotalNumOfCustomers,
 };
+

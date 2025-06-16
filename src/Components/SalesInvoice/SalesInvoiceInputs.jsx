@@ -12,14 +12,7 @@ import {
 import { colors } from "../../Globle/colors";
 import CreateCustomer from "../../Button/CreateCustomerButoon";
 import { Autocomplete } from "@mui/material";
-import {
-  Grid,
-  TextField,
-  Typography,
-  Button,
-  Alert,
-  Box,
-  Paper,
+import { Grid, TextField,Typography,  Button, Alert, Box,  Paper,
 } from "@mui/material";
 import {
   FormControl,
@@ -187,20 +180,12 @@ const SalesInvoiceInputs = () => {
     console.log("Payload:", payload);
   };
 
-  // useEffect(() => {
-  //   dispatch(GetAllProducts());
-  // }, []);
-
   useEffect(() => {
     dispatch(GetAllProducts());
     dispatch(GetCustomerName());
     dispatch(GetInvoiceNumOrRefNum());
     dispatch(GetTax());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(GetInvoiceNumOrRefNum());
-  // }, [dispatch]);
 
   useEffect(() => {
     if (invoiceMeta.invoice_number || invoiceMeta.reference_number) {
@@ -211,10 +196,6 @@ const SalesInvoiceInputs = () => {
       }));
     }
   }, [invoiceMeta]);
-
-  // useEffect(() => {
-  //   dispatch(GetTax());
-  // }, []);
 
   return (
     <Box maxWidth="lg" mx="auto" p={3}>
@@ -424,141 +405,6 @@ const SalesInvoiceInputs = () => {
         Items
       </Typography>
 
-      {/* <Paper
-        elevation={0}
-        sx={{
-          border: `1px solid ${colors.SOLUTYICS_GRAY}`,
-          borderRadius: "4px",
-          p: 1,
-          mb: 2,
-        }}
-      >
-        {items.map((item, index) => (
-          <Grid
-            container
-            spacing={1}
-            key={index}
-            alignItems="center"
-            mb={1}
-            sx={{
-              padding: 1,
-              borderRadius: "4px",
-              backgroundColor:
-                index % 2 === 0
-                  ? colors.WHITE_COLOR
-                  : colors.SLIGHTLY_DARK_GRAY_COLOR,
-              "&:hover": {
-                backgroundColor: `${colors.SOLUTYICS_PURPLE}08`,
-              },
-            }}
-          >
-            <Grid item xs={12} sm={3}>
-              <Autocomplete
-                options={products || []}
-                getOptionLabel={(option) =>
-                  option
-                    ? `${option.product_id || option.id} - ${option.name}`
-                    : ""
-                }
-                value={
-                  (products || []).find(
-                    (p) =>
-                      String(p.id) === String(item.product_id) ||
-                      String(p.product_id) === String(item.product_id)
-                  ) || null
-                }
-                onChange={(event, newValue) => {
-                  handleItemChange(
-                    index,
-                    "product_id",
-                    newValue ? newValue.id || newValue.product_id : ""
-                  );
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Product"
-                    size="small"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "&:hover fieldset": {
-                          borderColor: colors.SOLUTYICS_PURPLE,
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: colors.SOLUTYICS_PURPLE,
-                        },
-                      },
-                    }}
-                  />
-                )}
-                isOptionEqualToValue={(option, value) => {
-                  if (!option || !value) return false;
-                  return (
-                    String(option.id) === String(value.id) ||
-                    String(option.product_id) === String(value.product_id)
-                  );
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <TextField
-                label="Description"
-                value={item.description}
-                InputProps={{ readOnly: true }}
-                size="small"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={3} md={2} lg={2}>
-              <TextField
-                type="number"
-                fullWidth
-                label="Qty"
-                value={item.quantity}
-                onChange={(e) =>
-                  handleItemChange(index, "quantity", e.target.value)
-                }
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={1.5}>
-              <TextField
-                type="number"
-                fullWidth
-                label="Unit Price"
-                InputProps={{ readOnly: true }}
-                value={item.unit_price}
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={1}>
-              <TextField
-                type="number"
-                fullWidth
-                label="Discount"
-                InputProps={{ readOnly: true }}
-                value={item.discount}
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={1}>
-              <TextField
-                type="number"
-                fullWidth
-                label="Tax"
-                InputProps={{ readOnly: true }}
-                value={item.tax}
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={1}>
-              <Typography fontWeight="bold" color={colors.SOLUTYICS_GRAY}>
-                ${parseFloat(item.line_total || 0).toFixed(2)}
-              </Typography>
-            </Grid>
-          </Grid>
-        ))}
-      </Paper> */}
       <Paper
         elevation={0}
         sx={{
