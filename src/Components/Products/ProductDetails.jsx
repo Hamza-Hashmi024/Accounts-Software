@@ -24,6 +24,7 @@ import SearchButton from "../../Button/SearchButton";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { colors } from "../../Globle/colors";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -126,8 +127,30 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="mt-10">
-      <div className="flex items-center gap-4 mb-6">
+    <div className="mt-5">
+     <Paper
+        elevation={0}
+        sx={{
+          backgroundColor: colors.SOLUTYICS_GRAY,
+          p: 2,
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+            color: colors.WHITE_COLOR,
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+          }}
+        >
+          Search Product
+        </Typography>
+      </Paper>
+
+
+
+      <div className="flex items-center gap-4 mb-6 mt-4">
         <TextField
           label="Enter Product ID"
           variant="outlined"
