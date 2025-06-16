@@ -6,6 +6,7 @@ import Customer from "./Components/CreateCustomer/Customer";
 import ProductPage from "./Pages/ProductPage";
 import SalesDashboard from "./Pages/SalesDashboard";
 import ReceivablesTable from "./Components/Reciveable/ReceivablesTable";
+import Tax from "./Components/Tax/Tax";
 
 const Dashboard = () => <h1 className="text-3xl font-bold">Dashboard</h1>;
 const Payable = () => <h1 className="text-3xl font-bold">Payable</h1>;
@@ -24,6 +25,7 @@ const App = () => {
            <Route path="create/customer" element={<Customer />} />
           <Route path="payable" element={<Payable />} />
           <Route path="receivable" element={<ReceivablesTable />} />
+           <Route path="tax" element={<Tax />} />
           <Route path="*" element={<h1 className="text-3xl font-bold">404 Not Found</h1>} />
         </Route>
       </Routes>

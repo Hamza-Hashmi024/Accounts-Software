@@ -9,6 +9,7 @@ const getReceivables = async (req, res) => {
       to_date,
       customer_name,
       reference_number,
+      payment_method,
     } = req.query;
 
     let query = `
@@ -19,6 +20,7 @@ const getReceivables = async (req, res) => {
         invoices.amount_due,
         invoices.status,
         invoices.reference_number,
+        invoices.payment_method,
         customers.name AS customer_name
       FROM invoices
       INNER JOIN customers ON invoices.customer_id = customers.id
@@ -27,7 +29,6 @@ const getReceivables = async (req, res) => {
 
     const queryParams = [];
 
-    // Apply filters only if value is not empty
     if (invoice_id) {
       query += ` AND invoices.id = ?`;
       queryParams.push(invoice_id);
@@ -51,6 +52,11 @@ const getReceivables = async (req, res) => {
     if (reference_number) {
       query += ` AND invoices.reference_number LIKE ?`;
       queryParams.push(`%${reference_number}%`);
+    }
+
+    if (payment_method) {
+      query += ` AND invoices.payment_method = ?`;
+      queryParams.push(payment_method);
     }
 
     query += ` ORDER BY invoices.due_date ASC`;

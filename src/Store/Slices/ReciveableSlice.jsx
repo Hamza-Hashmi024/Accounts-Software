@@ -21,7 +21,7 @@ const ReceivableSlice = createSlice({
       })
       .addCase(GetReciveAble.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Something went wrong";
+        state.error = action.error?.message || "Something went wrong";
       });
   },
 });

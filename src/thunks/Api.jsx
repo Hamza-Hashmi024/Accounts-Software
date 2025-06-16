@@ -357,14 +357,34 @@ export const GetProductSalesOverView = createAsyncThunk(
 );
 
 export const GetReciveAble = createAsyncThunk(
-  "sales/reciveAble",
-  async (filters = {}, thunkAPI) => {
+  "Receivable/GetReciveAble",
+  async (filters, { rejectWithValue }) => {
     try {
-      const query = new URLSearchParams(filters).toString();
-      const response = await axios.get(`${BASE_URL}/reciveable/recivable?${query}`);
+      const queryParams = new URLSearchParams(filters).toString();
+      const response = await axios.get(`/api/receivables?${queryParams}`);
+      
+      // Ensure response is always an array
+      if (Array.isArray(response.data)) {
+        return response.data;
+      } else if (Array.isArray(response.data.data)) {
+        return response.data.data;
+      } else {
+        return [];
+      }
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Failed to fetch receivables");
+    }
+  }
+);
+
+export const CreateTax = createAsyncThunk(
+  "taxes/CreateTax",
+  async (data, { rejectWithValue }) =>{
+    try {
+      const response = await axios.post(`${BASE_URL}/tax/create`, data);
       return response.data;
-    } catch (error) {
-     return thunkAPI.rejectWithValue(error.response?.data?.error || "Failed to fetch receivables");
+    }catch{
+      return rejectWithValue("Failed to create tax");
     }
   }
 );

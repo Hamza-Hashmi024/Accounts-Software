@@ -21,13 +21,13 @@ const ReceivablesTable = () => {
   const { receivable, loading, error } = useSelector((state) => state.Receivable);
 
   const [filters, setFilters] = useState({
-    id: "",
+    invoice_id: "",
     customer_name: "",
     reference_number: "",
     due_date: "",
-    payment_method: "",
     from_date: "",
-    to_date: ""
+    to_date: "",
+    payment_method: ""
   });
 
   const handleFilterChange = (e) => {
@@ -38,9 +38,8 @@ const ReceivablesTable = () => {
     const cleanedFilters = Object.fromEntries(
       Object.entries(newFilters).filter(([_, v]) => v.trim() !== "")
     );
-    if (Object.keys(cleanedFilters).length > 0) {
-      dispatch(GetReciveAble(cleanedFilters));
-    }
+
+    dispatch(GetReciveAble(cleanedFilters));
   };
 
   useEffect(() => {
@@ -49,87 +48,98 @@ const ReceivablesTable = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      <Typography 
-        variant="h5" 
-        fontWeight="bold" 
-        sx={{ 
-          mb: 3, 
-          color: colors.SOLUTYICS_PURPLE,
-          paddingBottom: '8px',
-          borderBottom: `2px solid ${colors.SOLUTYICS_GRAY}`
-        }}
-      >
+      <Typography variant="h5" fontWeight="bold" sx={{ mb: 2, color: colors.DARK_GREEN_COLOR }}>
         Receivables
       </Typography>
 
       {/* Filter Inputs */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        {[
-          { name: "id", label: "Invoice ID" },
-          { name: "customer_name", label: "Customer Name" },
-          { name: "reference_number", label: "Reference Number" },
-          { name: "due_date", label: "Due Date (YYYY-MM-DD)" },
-          { 
-            name: "payment_method", 
-            label: "Payment Method",
-            select: true,
-            options: ["Cash", "Credit", "Bank"]
-          },
-          { 
-            name: "from_date", 
-            label: "From Date",
-            type: "date",
-            shrink: true
-          },
-          { 
-            name: "to_date", 
-            label: "To Date",
-            type: "date",
-            shrink: true
-          }
-        ].map((field) => (
-          <Grid item xs={12} sm={2.4} key={field.name}>
-            <TextField
-              name={field.name}
-              label={field.label}
-              value={filters[field.name]}
-              onChange={handleFilterChange}
-              fullWidth
-              size="small"
-              type={field.type || "text"}
-              select={field.select || false}
-              InputLabelProps={{ shrink: field.shrink || false }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '&:hover fieldset': {
-                    borderColor: colors.SOLUTYICS_PURPLE,
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: colors.SOLUTYICS_PURPLE,
-                  },
-                },
-                '& .MuiInputLabel-root.Mui-focused': {
-                  color: colors.SOLUTYICS_PURPLE,
-                }
-              }}
-            >
-              {field.select && (
-                <>
-                  <MenuItem value="">All</MenuItem>
-                  {field.options.map(option => (
-                    <MenuItem key={option} value={option}>{option}</MenuItem>
-                  ))}
-                </>
-              )}
-            </TextField>
-          </Grid>
-        ))}
+        <Grid item xs={12} sm={2.4}>
+          <TextField
+            name="invoice_id"
+            label="Invoice ID"
+            value={filters.invoice_id}
+            onChange={handleFilterChange}
+            fullWidth
+            size="small"
+          />
+        </Grid>
+        <Grid item xs={12} sm={2.4}>
+          <TextField
+            name="customer_name"
+            label="Customer Name"
+            value={filters.customer_name}
+            onChange={handleFilterChange}
+            fullWidth
+            size="small"
+          />
+        </Grid>
+        <Grid item xs={12} sm={2.4}>
+          <TextField
+            name="reference_number"
+            label="Reference Number"
+            value={filters.reference_number}
+            onChange={handleFilterChange}
+            fullWidth
+            size="small"
+          />
+        </Grid>
+        <Grid item xs={12} sm={2.4}>
+          <TextField
+            name="due_date"
+            label="Due Date (YYYY-MM-DD)"
+            value={filters.due_date}
+            onChange={handleFilterChange}
+            fullWidth
+            size="small"
+          />
+        </Grid>
+        <Grid item xs={12} sm={2.4}>
+          <TextField
+            name="payment_method"
+            label="Payment Method"
+            value={filters.payment_method}
+            onChange={handleFilterChange}
+            fullWidth
+            size="small"
+            select
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="Cash">Cash</MenuItem>
+            <MenuItem value="Credit">Credit</MenuItem>
+            <MenuItem value="Bank">Bank</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sm={2.4}>
+          <TextField
+            name="from_date"
+            label="From Date"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={filters.from_date}
+            onChange={handleFilterChange}
+            fullWidth
+            size="small"
+          />
+        </Grid>
+        <Grid item xs={12} sm={2.4}>
+          <TextField
+            name="to_date"
+            label="To Date"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={filters.to_date}
+            onChange={handleFilterChange}
+            fullWidth
+            size="small"
+          />
+        </Grid>
       </Grid>
 
       {/* Loader/Error */}
       {loading && (
         <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
-          <CircularProgress sx={{ color: colors.SOLUTYICS_PURPLE }} />
+          <CircularProgress color="primary" />
         </Box>
       )}
 
@@ -141,52 +151,29 @@ const ReceivablesTable = () => {
 
       {/* Table */}
       {!loading && !error && (
-        <TableContainer 
-          component={Paper} 
-          sx={{ 
-            border: `1px solid ${colors.SOLUTYICS_GRAY}`,
-            borderRadius: '8px',
-            boxShadow: '0px 4px 10px rgba(71, 70, 76, 0.1)'
-          }}
-        >
+        <TableContainer component={Paper} sx={{ backgroundColor: colors.GRAY_COLOR }}>
           <Table>
             <TableHead>
-              <TableRow sx={{ backgroundColor: colors.SOLUTYICS_GRAY }}>
-                {["Invoice #", "Customer", "Reference", "Due Date", "Amount Due", "Status", "Payment Method"].map(header => (
-                  <TableCell 
-                    key={header}
-                    sx={{ 
-                      color: colors.WHITE_COLOR, 
-                      fontWeight: 600,
-                      fontSize: '0.95rem'
-                    }}
-                  >
-                    {header}
-                  </TableCell>
-                ))}
+              <TableRow sx={{ backgroundColor: colors.SLIGHTLY_DARK_GRAY_COLOR }}>
+                <TableCell>Invoice #</TableCell>
+                <TableCell>Customer</TableCell>
+                <TableCell>Reference</TableCell>
+                <TableCell>Due Date</TableCell>
+                <TableCell>Amount Due</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Payment Method</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {receivable.length > 0 ? (
                 receivable.map((invoice) => (
-                  <TableRow 
-                    key={invoice.id}
-                    hover
-                    sx={{ 
-                      '&:nth-of-type(even)': { 
-                        backgroundColor: colors.SLIGHTLY_DARK_GRAY_COLOR 
-                      },
-                      '&:hover': {
-                        backgroundColor: `${colors.SOLUTYICS_PURPLE}10`
-                      }
-                    }}
-                  >
+                  <TableRow key={invoice.id}>
                     <TableCell>{invoice.invoice_number}</TableCell>
                     <TableCell>{invoice.customer_name}</TableCell>
                     <TableCell>{invoice.reference_number || "—"}</TableCell>
                     <TableCell>{invoice.due_date}</TableCell>
                     <TableCell>
-                      <Typography fontWeight="bold" color={colors.SOLUTYICS_GRAY}>
+                      <Typography fontWeight="bold" color={colors.BLACK_COLOR}>
                         ${Number(invoice.amount_due).toFixed(2)}
                       </Typography>
                     </TableCell>
@@ -197,7 +184,6 @@ const ReceivablesTable = () => {
                           backgroundColor: getStatusColor(invoice.status),
                           color: colors.WHITE_COLOR,
                           fontWeight: 600,
-                          minWidth: '90px'
                         }}
                       />
                     </TableCell>
@@ -206,16 +192,8 @@ const ReceivablesTable = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell 
-                    colSpan={7} 
-                    align="center"
-                    sx={{ 
-                      color: colors.SOLUTYICS_GRAY,
-                      fontStyle: 'italic',
-                      py: 4
-                    }}
-                  >
-                    No matching receivables found
+                  <TableCell colSpan={7} align="center">
+                    No matching receivables found.
                   </TableCell>
                 </TableRow>
               )}

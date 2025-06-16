@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetTax } from "../../thunks/Api";
+import { GetTax  ,CreateTax } from "../../thunks/Api";
 
 const TaxSlice = createSlice({
   name: "tax",
@@ -22,7 +22,21 @@ const TaxSlice = createSlice({
       .addCase(GetTax.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Error While Fetching Taxes";
-      });
+      })
+      //  Create Tax U
+      .addCase(CreateTax.pending, (state) =>{
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(CreateTax.fulfilled, (state, action) =>{
+        state.loading = false;
+        state.taxes = [...state.taxes, action.payload];
+      })
+      .addCase(CreateTax.rejected, (state, action) =>{
+        state.loading = false;
+        state.error = action.payload || "Error While Creating Tax";
+      })
+      
   },
 });
 
