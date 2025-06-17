@@ -54,7 +54,7 @@ const ProductDetails = () => {
         setErrorOpen(true);
         setIsEditing(false);
       } else {
-        setIsEditing(false); // reset editing on successful fetch
+        setIsEditing(false); 
       }
     } catch (err) {
       setErrorMessage("Unexpected error during fetch.", err);
@@ -79,7 +79,7 @@ const ProductDetails = () => {
         setErrorMessage(msg);
         setErrorOpen(true);
       } else {
-        // Optionally clear the product from UI after successful delete
+       
         setProductId("");
         setIsEditing(false);
       }
