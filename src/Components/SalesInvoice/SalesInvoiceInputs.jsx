@@ -91,11 +91,13 @@ const SalesInvoiceInputs = () => {
         // Find tax rate
         const taxEntry = taxes.find((t) => t.id === product.tax_id);
         updatedItems[index].tax = parseFloat(taxEntry?.rate || 0);
+        updatedItems[index].tax_name = taxEntry?.name || "";
       } else {
         // Reset if product not found
         updatedItems[index].description = "";
         updatedItems[index].unit_price = 0;
         updatedItems[index].tax = 0;
+        updatedItems[index].name = "";
       }
     }
 
@@ -142,6 +144,7 @@ const SalesInvoiceInputs = () => {
         unit_price: 0,
         discount: 0,
         tax: 0,
+        name: "",
         line_total: 0,
       },
     ]);
@@ -558,7 +561,11 @@ const SalesInvoiceInputs = () => {
                   fullWidth
                   label="Tax"
                   InputProps={{ readOnly: true }}
-                  value={item.tax}
+                  value={
+                    item.tax !== undefined && item.name
+                      ? `${item.tax}% (${item.name})`
+                      : `${item.tax ?? 0}%`
+                  }
                   size="small"
                 />
               </Grid>

@@ -175,31 +175,28 @@ const Sales = () => {
   }, [dispatch]);
 
   return (
-    <Box
-    
-     >
-  <Paper
-  elevation={0}
-  sx={{
-    backgroundColor: colors.SOLUTYICS_GRAY,
-    p: 2,
-    mb: 2
-    
-  }}
->
-  <Typography
-    variant="h6"
-    sx={{
-      fontWeight: 700,
-      // mb: 1.5,
-      color: colors.WHITE_COLOR,
-      textTransform: "uppercase",
-      letterSpacing: "0.08em",
-    }}
-  >
-    Sales Overview
-  </Typography>
-</Paper>
+    <Box>
+      <Paper
+        elevation={0}
+        sx={{
+          backgroundColor: colors.SOLUTYICS_GRAY,
+          p: 2,
+          mb: 2,
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+            // mb: 1.5,
+            color: colors.WHITE_COLOR,
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+          }}
+        >
+          Sales Overview
+        </Typography>
+      </Paper>
 
       <Grid container spacing={2.5}>
         {metrics.map((metric, index) => (

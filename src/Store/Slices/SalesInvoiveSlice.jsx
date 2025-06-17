@@ -7,6 +7,7 @@ import {
   GetSalesGrowth,
   GetSalesAverage,
   GetMonthlySalesOverView,
+  GetAllSalesInvoice,
 } from "../../thunks/Api";
 
 const SalesInvoiceSlice = createSlice({
@@ -95,6 +96,7 @@ const SalesInvoiceSlice = createSlice({
         state.isLoading = true;
         state.isError = false;
       })
+
       .addCase(GetSalesGrowth.fulfilled, (state, action) => {
         state.isLoading = false;
         state.salesGrowth = action.payload;
@@ -135,7 +137,23 @@ const SalesInvoiceSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.errorMessage =
-        action.payload || "Failed to fetch monthly sales overview";
+          action.payload || "Failed to fetch monthly sales overview";
+      })
+
+      // Get Sales Invoice
+      .addCase(GetAllSalesInvoice.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+
+      .addCase(GetAllSalesInvoice.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.salesInvoice = action.payload;
+        console.log(action.payload);
+      })
+      .addCase(GetAllSalesInvoice.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
       });
   },
 });

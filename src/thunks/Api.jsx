@@ -46,6 +46,20 @@ export const GetInvoiceNumOrRefNum = createAsyncThunk(
   }
 );
 
+export const GetAllSalesInvoice = createAsyncThunk(
+  "invoice/getAllSalesInvoice",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/sales/invoice`);
+      return response.data;
+    }catch(error){
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+
+
+)
+
 // Customer
 export const CreateCustomer = createAsyncThunk(
   "customer/create",

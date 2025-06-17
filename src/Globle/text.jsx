@@ -21,12 +21,17 @@ export const MenuItems = [
     to: "/invoice",
     Icon: <PiInvoice style={{ color: colors.SOLUTYICS_PURPLE }} />,
   },
+    {
+    text: "Invoices",
+    to: "get/invoices",
+    Icon: <GiTargetDummy style={{ color: colors.SOLUTYICS_PURPLE }} />,
+  },
   {
     text: "Products",
     to: "/product",
     Icon: <RiPaypalLine style={{ color: colors.SOLUTYICS_PURPLE }} />,
   },
-    {
+  {
     text: "Tax",
     to: "tax",
     Icon: <RiPaypalLine style={{ color: colors.SOLUTYICS_PURPLE }} />,

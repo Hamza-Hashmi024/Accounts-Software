@@ -410,6 +410,21 @@ const MonthlySalesController = async (req, res) => {
   }
 };
 
+const GetAllInvoices = (req , res ) =>{
+  
+  db.query("SELECT * FROM invoices", (err, result) =>{
+    if (err){
+      console.error("Error in Get Invoices:", err);
+      return res.status(500).json({ error: "Database error", details: err });
+    }else{
+      res.status(200).json({
+        message: "Invoices retrieved successfully",
+        data: result
+      })
+    }
+  })
+}
+
 
 module.exports = {
   createInvoice,
@@ -422,6 +437,7 @@ module.exports = {
   TotalProductSold,
   GetToatalInvoiceNum,
   GetSalesGrowth,
-  MonthlySalesController
+  MonthlySalesController,
+  GetAllInvoices
 };
 
