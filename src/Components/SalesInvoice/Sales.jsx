@@ -1,6 +1,21 @@
 import React from "react";
 import { Grid, Paper, Typography, Box } from "@mui/material";
-import {LineChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, Legend,} from "recharts";
+import {
+  LineChart,
+  Line,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
@@ -10,8 +25,16 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { colors } from "../../Globle/colors";
 import Chip from "@mui/material/Chip";
 import { lighten } from "@mui/material/styles";
-import {  GetSalesRevenew,  TotalProductSold,  TotalInvoice,  GetTotalCustomerNum,  GetSalesGrowth,  GetSalesAverage,
-   GetMonthlySalesOverView ,  GetProductSalesOverView} from "../../thunks/Api";
+import {
+  GetSalesRevenew,
+  TotalProductSold,
+  TotalInvoice,
+  GetTotalCustomerNum,
+  GetSalesGrowth,
+  GetSalesAverage,
+  GetMonthlySalesOverView,
+  GetProductSalesOverView,
+} from "../../thunks/Api";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -25,15 +48,14 @@ const Sales = () => {
     salesGrowth,
     salesAverage,
     monthlySales,
-    
   } = useSelector((state) => state.SalesInvoice);
 
   const {
     isLoading: productLoading,
     error: productError,
     totalProductSold,
-    productSalesOverView
-    } = useSelector((state) => state.Product);
+    productSalesOverView,
+  } = useSelector((state) => state.Product);
 
   const { loading, error, totalCustomerNum } = useSelector(
     (state) => state.Customer
@@ -115,11 +137,11 @@ const Sales = () => {
     },
   ];
 
- const revenue = monthlySales?.data?.map(item => ({
-  month: item.month,
-  revenue: parseFloat(item.revenue),
-})) || [];
-
+  const revenue =
+    monthlySales?.data?.map((item) => ({
+      month: item.month,
+      revenue: parseFloat(item.revenue),
+    })) || [];
 
   // const productSales = [
   //   { name: "Product A", sales: 1200 },
@@ -127,13 +149,12 @@ const Sales = () => {
   //   { name: "Product C", sales: 500 },
   // ];
 
-const productSales = Array.isArray(productSalesOverView?.data)
-  ? productSalesOverView.data.map((item) => ({
-      name: item.name,
-      sales: parseFloat(item.sales),
-    }))
-  : [];
-
+  const productSales = Array.isArray(productSalesOverView?.data)
+    ? productSalesOverView.data.map((item) => ({
+        name: item.name,
+        sales: parseFloat(item.sales),
+      }))
+    : [];
 
   const pieData = [
     { name: "Online", value: 3200 },
@@ -154,13 +175,31 @@ const productSales = Array.isArray(productSalesOverView?.data)
   }, [dispatch]);
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography
-        variant="h5"
-        sx={{ fontWeight: "bold", mb: 4, color: colors.SOLUTYICS_PURPLE }}
-      >
-        Sales Dashboard
-      </Typography>
+    <Box
+    
+     >
+  <Paper
+  elevation={0}
+  sx={{
+    backgroundColor: colors.SOLUTYICS_GRAY,
+    p: 2,
+    mb: 2
+    
+  }}
+>
+  <Typography
+    variant="h6"
+    sx={{
+      fontWeight: 700,
+      // mb: 1.5,
+      color: colors.WHITE_COLOR,
+      textTransform: "uppercase",
+      letterSpacing: "0.08em",
+    }}
+  >
+    Sales Overview
+  </Typography>
+</Paper>
 
       <Grid container spacing={2.5}>
         {metrics.map((metric, index) => (
@@ -240,8 +279,8 @@ const productSales = Array.isArray(productSalesOverView?.data)
             elevation={0}
             sx={{
               p: 3,
-              borderRadius: "8px",
-              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+              // borderRadius: "8px",
+              // boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
               height: "100%",
             }}
           >
@@ -355,8 +394,6 @@ const productSales = Array.isArray(productSalesOverView?.data)
             elevation={0}
             sx={{
               p: 3,
-              borderRadius: "8px",
-              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
               height: "100%",
             }}
           >
@@ -400,6 +437,7 @@ const productSales = Array.isArray(productSalesOverView?.data)
                 />
               </Box>
             </Box>
+
             <ResponsiveContainer width="100%" height={280}>
               <BarChart
                 data={productSales}
