@@ -26,6 +26,11 @@ export const MenuItems = [
     to: "/product",
     Icon: <RiPaypalLine style={{ color: colors.SOLUTYICS_PURPLE }} />,
   },
+    {
+    text: "Tax",
+    to: "tax",
+    Icon: <RiPaypalLine style={{ color: colors.SOLUTYICS_PURPLE }} />,
+  },
   {
     text: "Customer",
     to: "create/customer",
