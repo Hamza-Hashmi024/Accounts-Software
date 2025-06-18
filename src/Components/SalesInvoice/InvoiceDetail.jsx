@@ -5,7 +5,6 @@ import {
   Typography,
   Paper,
   Box,
-  Grid,
   Divider,
   Table,
   TableBody,
@@ -15,54 +14,43 @@ import {
   TableRow,
 } from "@mui/material";
 import { colors } from "../../Globle/colors";
-import { GetAllCustomers } from "../../thunks/Api";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
+import { GetSalesInvoicesViewById } from "../../thunks/Api";
 
 const InvoiceDetail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  // Fetch invoice by ID 
-  const invoice = useSelector((state) =>
-    state.SalesInvoice.salesInvoice?.find((item) => item.id.toString() === id)
-  );
-
-  // Fetch customers from Redux
- const customers = useSelector((state) => state.Customer?.customers || []);
-  console.log("Customers from Redux:", customers);
-
-  // Fetch all customers on mount
+  // ✅ Fetch invoice on mount
   useEffect(() => {
-    dispatch(GetAllCustomers());
-  }, [dispatch]);
+    if (id) {
+      dispatch(GetSalesInvoicesViewById(id));
+    }
+  }, [dispatch, id]);
 
-  // Prevent crashing while customers or invoice is not loaded
-  const customer = useMemo(() => {
-    if (!invoice || !invoice.customer_id) return null;
-    return customers.find(
-      (c) => c?.id?.toString() === invoice.customer_id?.toString()
-    );
-  }, [customers, invoice]);
+  // ✅ Get invoice from Redux (it's not an array!)
+  const invoice = useSelector((state) => state.SalesInvoice.salesInvoice);
 
   if (!invoice) {
     return (
-     <Box
-  sx={{
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "80vh", // Adjust as needed
-  }}
->
-  <MdReportGmailerrorred size={50} color="red" spacing={4} />
-  <Typography variant="h5" color="error">
-    Select Invoice Again
-  </Typography>
-</Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "80vh",
+        }}
+      >
+        <MdReportGmailerrorred size={50} color="red" />
+        <Typography variant="h5" color="error" sx={{ ml: 2 }}>
+          Select Invoice Again
+        </Typography>
+      </Box>
     );
   }
 
-  // Sample company info
+  const { customer, items } = invoice;
+
   const companyInfo = {
     name: "Solutyics",
     address: "793-C, Block C, Faisal Town, Lahore - Pakistan",
@@ -83,13 +71,9 @@ const InvoiceDetail = () => {
         backgroundColor: colors.WHITE_COLOR,
       }}
     >
-      {/* Company Header */}
+      {/* Company Info */}
       <Box sx={{ mb: 4, textAlign: "center" }}>
-        <Typography
-          variant="h4"
-          fontWeight={800}
-          color={colors.SOLUTYICS_PURPLE}
-        >
+        <Typography variant="h4" fontWeight={800} color={colors.SOLUTYICS_PURPLE}>
           {companyInfo.name}
         </Typography>
         <Typography variant="body2" color={colors.DARK_GRAY}>
@@ -102,150 +86,71 @@ const InvoiceDetail = () => {
 
       <Divider sx={{ borderColor: colors.SOLUTYICS_PURPLE, mb: 4 }} />
 
-      {/* Invoice Info */}
-      <Grid container spacing={4}>
+      {/* Invoice Details */}
+      <DetailRow label="Invoice Number" value={invoice.invoice_number} />
+      <DetailRow label="Invoice Date" value={new Date(invoice.invoice_date).toLocaleDateString()} />
+      <DetailRow label="Due Date" value={new Date(invoice.due_date).toLocaleDateString()} />
+      <DetailRow label="Status" value={invoice.status} />
+      <DetailRow label="Reference" value={invoice.reference_number} />
+      <DetailRow label="Notes" value={invoice.notes || "-"} />
 
-          {/* INVOICE DETAILS */}
-        <Grid item xs={3}>
-          <Typography variant="h6" fontWeight={700} color={colors.SOLUTYICS_PURPLE} gutterBottom>
-            INVOICE DETAILS
-          </Typography>
-          <Box sx={{ p: 2, borderRadius: "4px", minHeight: 150 }}>
-            <DetailRow label="Invoice Number" value={invoice.invoice_number} />
-            <DetailRow label="Invoice Date" value={invoice.invoice_date} />
-            <DetailRow label="Due Date" value={invoice.due_date} />
-            <DetailRow label="Reference" value={invoice.reference_number || "N/A"} />
-            <DetailRow
-              label="Status"
-              value={
-                <Typography
-                  fontWeight={700}
-                  color={
-                    invoice.status === "Paid"
-                      ? colors.GREEN_COLOR
-                      : invoice.status === "Pending"
-                      ? colors.YELLOW_COLOR
-                      : colors.RED_COLOR
-                  }
-                >
-                  {invoice.status}
-                </Typography>
-              }
-            />
-          </Box>
-        </Grid>
+      <Divider sx={{ my: 2 }} />
 
+      {/* Customer Info */}
+      <Typography variant="h6" sx={{ mb: 1 }}>Customer Info</Typography>
+      <DetailRow label="Name" value={customer?.name} />
+      <DetailRow label="Email" value={customer?.email} />
+      <DetailRow label="Phone" value={customer?.phone} />
 
-
-        {/* BILL TO */}
-        <Grid item xs={5}>
-          <Typography variant="h6" fontWeight={700} color={colors.SOLUTYICS_PURPLE} gutterBottom>
-            BILL TO:
-          </Typography>
-   <Box sx={{ p: 2, borderRadius: "4px", minHeight: 150 }}>
-  <Typography fontWeight={600}>{customer?.name || "Customer Name"}</Typography>
-  <Typography>{customer?.billing_address || "Street Address"}</Typography>
-  <Typography>Phone: {customer?.phone || "Phone Number"}</Typography>
-  <Typography>Email: {customer?.email || "email@domain.com"}</Typography>
-   <Typography> Shipping Address: {invoice.shipping_fee || "Shipping Address"}</Typography>
-            <Typography>Note: {invoice.notes || "Phone Number"}</Typography>
-</Box>
-        </Grid>
-
-     
-
-     
-      </Grid>
+      <Divider sx={{ my: 3 }} />
 
       {/* Items Table */}
-      <Box sx={{ mt: 4 }}>
-        <TableContainer>
-          <Table>
-            <TableHead sx={{ backgroundColor: colors.SOLUTYICS_PURPLE }}>
-              <TableRow>
-                <TableCell sx={{ color: colors.WHITE_COLOR, fontWeight: 700 }}>DESCRIPTION</TableCell>
-                <TableCell align="center" sx={{ color: colors.WHITE_COLOR, fontWeight: 700 }}>QTY</TableCell>
-                <TableCell align="right" sx={{ color: colors.WHITE_COLOR, fontWeight: 700 }}>UNIT PRICE</TableCell>
-                <TableCell align="right" sx={{ color: colors.WHITE_COLOR, fontWeight: 700 }}>TOTAL</TableCell>
+      <Typography variant="h6" sx={{ mb: 1 }}>Invoice Items</Typography>
+      <TableContainer>
+        <Table size="small">
+          <TableHead sx={{ backgroundColor: colors.LIGHT_GRAY_COLOR }}>
+            <TableRow>
+              <TableCell>Product</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Qty</TableCell>
+              <TableCell>Unit Price</TableCell>
+              <TableCell>Tax</TableCell>
+              <TableCell>Discount</TableCell>
+              <TableCell>Total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {items?.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.product_name}</TableCell>
+                <TableCell>{item.description}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>Rs. {item.unit_price}</TableCell>
+                <TableCell>{item.tax}%</TableCell>
+                <TableCell>{item.discount}%</TableCell>
+                <TableCell>Rs. {item.line_total}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {invoice.items?.map((item, index) => (
-                <TableRow
-                  key={index}
-                  sx={{
-                    backgroundColor:
-                      index % 2 === 0 ? colors.WHITE_COLOR : colors.CV_LIGHT_GRAY,
-                  }}
-                >
-                  <TableCell>{item.description}</TableCell>
-                  <TableCell align="center">{item.quantity}</TableCell>
-                  <TableCell align="right">Rs. {item.unit_price}</TableCell>
-                  <TableCell align="right">Rs. {item.total}</TableCell>
-                </TableRow>
-              ))}
-              <TableRow>
-                <TableCell colSpan={4} sx={{ border: "none", height: 20 }} />
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Divider sx={{ my: 3 }} />
 
       {/* Summary */}
-      <Grid container spacing={2} sx={{ mt: 1 }}>
-        <Grid item xs={8}>
-          <Box>
-            <Typography variant="h6" fontWeight={700} color={colors.SOLUTYICS_PURPLE} gutterBottom>
-              REMARKS / NOTES
-            </Typography>
-            <Box sx={{ p: 2, backgroundColor: colors.CV_LIGHT_GRAY, borderRadius: "4px", minHeight: 100 }}>
-              <Typography>{invoice.notes || "No additional remarks or notes for this invoice."}</Typography>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={4}>
-          <Box sx={{ p: 2, backgroundColor: colors.SLIGHTLY_DARK_GRAY_COLOR, borderRadius: "4px" }}>
-            <SummaryRow label="Subtotal" value={invoice.subtotal} />
-            <SummaryRow label="Discount" value={`-${invoice.total_discount}`} />
-            <SummaryRow label="Subtotal Less Discount" value={invoice.subtotal - invoice.total_discount} />
-            <SummaryRow label={`Tax Rate (${invoice.tax_rate || 0}%)`} value={invoice.total_tax} />
-            <SummaryRow label="Shipping/Handling" value={invoice.shipping_fee} />
-            <Divider sx={{ my: 1, borderColor: colors.SOLUTYICS_GRAY }} />
-            <SummaryRow label="TOTAL DUE" value={invoice.grand_total} bold color={colors.SOLUTYICS_PURPLE} />
-            <SummaryRow label="Amount Paid" value={invoice.amount_paid} />
-            <SummaryRow
-              label="Amount Due"
-              value={invoice.amount_due}
-              bold
-              color={invoice.amount_due > 0 ? colors.RED_COLOR : colors.GREEN_COLOR}
-            />
-          </Box>
-        </Grid>
-      </Grid>
-
-      {/* Footer */}
-      <Box
-        sx={{
-          mt: 4,
-          pt: 2,
-          borderTop: `1px solid ${colors.SLIGHTLY_DARK_GRAY_COLOR}`,
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography variant="caption" color={colors.DARK_GRAY}>
-          Created at: {invoice.created_at}
-        </Typography>
-        <Typography variant="caption" color={colors.DARK_GRAY}>
-          Last updated: {invoice.updated_at}
-        </Typography>
-      </Box>
+      <Typography variant="h6" sx={{ mb: 1 }}>Summary</Typography>
+      <SummaryRow label="Subtotal" value={invoice.subtotal} />
+      <SummaryRow label="Tax" value={invoice.total_tax} />
+      <SummaryRow label="Shipping" value={invoice.shipping_fee} />
+      <SummaryRow label="Discount" value={invoice.total_discount} />
+      <SummaryRow label="Grand Total" value={invoice.grand_total} bold />
+      <SummaryRow label="Paid" value={invoice.amount_paid} />
+      <SummaryRow label="Due" value={invoice.amount_due} bold color="red" />
     </Paper>
   );
 };
 
-// Reusable components
+// Utility Components
 const DetailRow = ({ label, value }) => (
   <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
     <Typography variant="body2" fontWeight={600}>{label}:</Typography>

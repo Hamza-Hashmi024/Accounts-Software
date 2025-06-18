@@ -1,6 +1,7 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../Globle/Api";
+import { id } from "date-fns/locale";
 
 export const CreateSalesInvoice = createAsyncThunk(
   "invoice/create",
@@ -52,15 +53,35 @@ export const GetAllSalesInvoice = createAsyncThunk(
     try {
       const response = await axios.get(`${BASE_URL}/sales/get/Invoices`);
       return response.data;
-    }catch(error){
+    } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
+);
 
-
-)
+// export const GetSalesInvoicesViewById = createAsyncThunk(
+//   "invoice/getSalesInvoicesById",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(`${BASE_URL}/sales/Invoices/View/${id}`, {
+//       });
+//       return response.data;
+//     } catch (error) {
+//       return rejectWithValue(error.response?.data || error.message);
+//     }
+//   }
+// );
 
 // Customer
+
+export const GetSalesInvoicesViewById = createAsyncThunk(
+  "salesInvoice/getById",
+  async (id, thunkAPI) => {
+    const response = await axios.get(`${BASE_URL}/sales/Invoices/View/${id}`);
+    return  response.data.invoice;; // This will be available as `action.payload`
+  }
+);
+
 export const CreateCustomer = createAsyncThunk(
   "customer/create",
   async (payload, { rejectWithValue }) => {
@@ -376,7 +397,7 @@ export const GetReciveAble = createAsyncThunk(
     try {
       const queryParams = new URLSearchParams(filters).toString();
       const response = await axios.get(`/api/receivables?${queryParams}`);
-      
+
       // Ensure response is always an array
       if (Array.isArray(response.data)) {
         return response.data;
@@ -386,18 +407,20 @@ export const GetReciveAble = createAsyncThunk(
         return [];
       }
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to fetch receivables");
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to fetch receivables"
+      );
     }
   }
 );
 
 export const CreateTax = createAsyncThunk(
   "taxes/CreateTax",
-  async (data, { rejectWithValue }) =>{
+  async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_URL}/tax/create`, data);
       return response.data;
-    }catch{
+    } catch {
       return rejectWithValue("Failed to create tax");
     }
   }

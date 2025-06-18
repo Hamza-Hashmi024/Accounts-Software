@@ -8,6 +8,7 @@ import {
   GetSalesAverage,
   GetMonthlySalesOverView,
   GetAllSalesInvoice,
+  GetSalesInvoicesViewById,
 } from "../../thunks/Api";
 
 const SalesInvoiceSlice = createSlice({
@@ -22,7 +23,7 @@ const SalesInvoiceSlice = createSlice({
     salesGrowth: null,
     salesAverage: null,
     monthlySales: null,
-    salesInvoice : null,
+    salesInvoice: null,
   },
   reducers: {},
 
@@ -153,6 +154,23 @@ const SalesInvoiceSlice = createSlice({
         console.log(action.payload);
       })
       .addCase(GetAllSalesInvoice.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      // GetSalesInvoicesViewById
+
+      .addCase(GetSalesInvoicesViewById.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+
+      .addCase(GetSalesInvoicesViewById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.salesInvoice = action.payload;
+        console.log(action.payload);
+      })
+
+      .addCase(GetSalesInvoicesViewById.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });
