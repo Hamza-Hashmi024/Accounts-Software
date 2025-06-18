@@ -50,7 +50,7 @@ export const GetAllSalesInvoice = createAsyncThunk(
   "invoice/getAllSalesInvoice",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${BASE_URL}/sales/invoice`);
+      const response = await axios.get(`${BASE_URL}/sales/get/Invoices`);
       return response.data;
     }catch(error){
       return rejectWithValue(error.response?.data || error.message);
@@ -129,7 +129,7 @@ export const GetAllCustomers = createAsyncThunk(
   "customer/getAll",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`${BASE_URL}/customer/customer`, {
+      const response = await axios.get(`${BASE_URL}/customer/customers`, {
         headers: {
           "Content-Type": "application/json",
         },

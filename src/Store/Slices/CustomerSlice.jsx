@@ -70,11 +70,13 @@ const CustomerSlice = createSlice({
       .addCase(DeleteCustomerById.fulfilled, (state, action) => {
         state.loading = false;
         state.customer = action.payload;
+        console.log(action.payload);
       })
 
       .addCase(DeleteCustomerById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something Went Wrong";
+
       })
 
       .addCase(GetAllCustomers.pending, (state) => {
@@ -85,6 +87,7 @@ const CustomerSlice = createSlice({
       .addCase(GetAllCustomers.fulfilled, (state, action) => {
         state.loading = false;
         state.customers = action.payload;
+        console.log("comming from Slaice " , action.payload)
       })
 
       .addCase(GetAllCustomers.rejected, (state, action) => {

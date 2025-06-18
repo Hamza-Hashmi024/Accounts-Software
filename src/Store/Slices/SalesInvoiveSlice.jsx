@@ -22,6 +22,7 @@ const SalesInvoiceSlice = createSlice({
     salesGrowth: null,
     salesAverage: null,
     monthlySales: null,
+    salesInvoice : null,
   },
   reducers: {},
 
@@ -148,7 +149,7 @@ const SalesInvoiceSlice = createSlice({
 
       .addCase(GetAllSalesInvoice.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.salesInvoice = action.payload;
+        state.salesInvoice = action.payload.data;
         console.log(action.payload);
       })
       .addCase(GetAllSalesInvoice.rejected, (state) => {
