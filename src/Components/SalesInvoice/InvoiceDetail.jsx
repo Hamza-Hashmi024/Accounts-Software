@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { MdReportGmailerrorred } from "react-icons/md";
 import {
   Typography,
   Paper,
@@ -45,9 +46,19 @@ const InvoiceDetail = () => {
 
   if (!invoice) {
     return (
-      <Typography variant="h6" color="error" sx={{ m: 4 }}>
-        Invoice not found.
-      </Typography>
+     <Box
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "80vh", // Adjust as needed
+  }}
+>
+  <MdReportGmailerrorred size={50} color="red" spacing={4} />
+  <Typography variant="h5" color="error">
+    Select Invoice Again
+  </Typography>
+</Box>
     );
   }
 
@@ -93,20 +104,8 @@ const InvoiceDetail = () => {
 
       {/* Invoice Info */}
       <Grid container spacing={4}>
-        {/* BILL TO */}
-        <Grid item xs={5}>
-          <Typography variant="h6" fontWeight={700} color={colors.SOLUTYICS_PURPLE} gutterBottom>
-            BILL TO:
-          </Typography>
-   <Box sx={{ p: 2, borderRadius: "4px", minHeight: 150 }}>
-  <Typography fontWeight={600}>{customer?.name || "Customer Name"}</Typography>
-  <Typography>{customer?.billing_address || "Street Address"}</Typography>
-  <Typography>Phone: {customer?.phone || "Phone Number"}</Typography>
-  <Typography>Email: {customer?.email || "email@domain.com"}</Typography>
-</Box>
-        </Grid>
 
-        {/* INVOICE DETAILS */}
+          {/* INVOICE DETAILS */}
         <Grid item xs={3}>
           <Typography variant="h6" fontWeight={700} color={colors.SOLUTYICS_PURPLE} gutterBottom>
             INVOICE DETAILS
@@ -136,18 +135,26 @@ const InvoiceDetail = () => {
           </Box>
         </Grid>
 
-        {/* SHIP TO */}
-        <Grid item xs={4}>
+
+
+        {/* BILL TO */}
+        <Grid item xs={5}>
           <Typography variant="h6" fontWeight={700} color={colors.SOLUTYICS_PURPLE} gutterBottom>
-            SHIP TO:
+            BILL TO:
           </Typography>
-          <Box sx={{ p: 2, borderRadius: "4px", minHeight: 150 }}>
-            <Typography fontWeight={600}>{invoice.ship_name || "Name/Department"}</Typography>
-            <Typography>{invoice.ship_company || "Client Company"}</Typography>
-            <Typography>{invoice.ship_address || "Shipping Address"}</Typography>
-            <Typography>Phone: {invoice.ship_phone || "Phone Number"}</Typography>
-          </Box>
+   <Box sx={{ p: 2, borderRadius: "4px", minHeight: 150 }}>
+  <Typography fontWeight={600}>{customer?.name || "Customer Name"}</Typography>
+  <Typography>{customer?.billing_address || "Street Address"}</Typography>
+  <Typography>Phone: {customer?.phone || "Phone Number"}</Typography>
+  <Typography>Email: {customer?.email || "email@domain.com"}</Typography>
+   <Typography> Shipping Address: {invoice.shipping_fee || "Shipping Address"}</Typography>
+            <Typography>Note: {invoice.notes || "Phone Number"}</Typography>
+</Box>
         </Grid>
+
+     
+
+     
       </Grid>
 
       {/* Items Table */}
