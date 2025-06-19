@@ -17,13 +17,14 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Button,
 } from "@mui/material";
+import { IoCreate } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../Globle/colors";
-import { GetAllSalesInvoice ,DeleteInvoiceById } from "../../thunks/Api";
+import { GetAllSalesInvoice, DeleteInvoiceById } from "../../thunks/Api";
 import InvoiceDetail from "./InvoiceDetail";
 import { id } from "date-fns/locale";
-
 
 const Invoices = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,6 @@ const Invoices = () => {
   const { salesInvoice, isLoading } = useSelector(
     (state) => state.SalesInvoice
   );
- 
 
   // Search state
   const [searchId, setSearchId] = useState("");
@@ -42,11 +42,11 @@ const Invoices = () => {
     dispatch(GetAllSalesInvoice());
   }, [dispatch]);
 
-const handleDelete = (id) => {
-  if (window.confirm("Are you sure you want to delete this invoice?")) {
-    dispatch(DeleteInvoiceById(id));
-  }
-};
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this invoice?")) {
+      dispatch(DeleteInvoiceById(id));
+    }
+  };
 
   // Filter logic
   const filteredInvoices = salesInvoice?.filter((invoice) => {
@@ -118,6 +118,22 @@ const handleDelete = (id) => {
         </Grid>
       </Grid>
 
+      <div className="mt-10">
+        <Button
+          onClick={() => navigate("/invoice")}
+          sx={{
+            backgroundColor: colors.SOLUTYICS_PURPLE,
+            color: colors.WHITE_COLOR, // Optional: set text color
+            "&:hover": {
+              backgroundColor: colors.SOLUTYICS_GRAY || "#6a1b9a", // Optional hover effect
+            },
+          }}
+        >
+          <IoCreate size={22} color={colors.SOLUTYICS_GRAY} />
+          Create New Invoice
+        </Button>
+      </div>
+
       {/* Table */}
       <TableContainer className="mt-4">
         <Table size="small">
@@ -133,7 +149,7 @@ const handleDelete = (id) => {
                 "Reference Number",
                 "Notes",
                 "Subtotal",
-                "Action"
+                "Action",
               ].map((header) => (
                 <TableCell key={header} sx={{ color: colors.WHITE_COLOR }}>
                   {header}
@@ -154,25 +170,27 @@ const handleDelete = (id) => {
                   <TableCell>{invoice.reference_number}</TableCell>
                   <TableCell>{invoice.notes}</TableCell>
                   <TableCell>{invoice.subtotal}</TableCell>
-                  <TableCell className="cursor-pointer"
+                  <TableCell
+                    className="cursor-pointer"
                     sx={{
                       color: colors.GREEN_COLOR,
                       display: "flex",
                       alignItems: "center",
                       gap: 1,
                     }}
-                      onClick={() => navigate(`/invoice/view/${invoice.id}`)}
+                    onClick={() => navigate(`/invoice/view/${invoice.id}`)}
                   >
                     <FaRegEyeSlash /> View
                   </TableCell>
-                   <TableCell className="cursor-pointer"
+                  <TableCell
+                    className="cursor-pointer"
                     sx={{
                       color: colors.RED_COLOR,
                       display: "flex",
                       alignItems: "center",
                       gap: 1,
                     }}
-                   onClick={() => handleDelete(invoice.id)}
+                    onClick={() => handleDelete(invoice.id)}
                   >
                     <MdDelete /> Delete
                   </TableCell>

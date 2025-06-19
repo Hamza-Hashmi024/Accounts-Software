@@ -143,12 +143,6 @@ const Sales = () => {
       revenue: parseFloat(item.revenue),
     })) || [];
 
-  // const productSales = [
-  //   { name: "Product A", sales: 1200 },
-  //   { name: "Product B", sales: 900 },
-  //   { name: "Product C", sales: 500 },
-  // ];
-
   const productSales = Array.isArray(productSalesOverView?.data)
     ? productSalesOverView.data.map((item) => ({
         name: item.name,
@@ -276,8 +270,6 @@ const Sales = () => {
             elevation={0}
             sx={{
               p: 3,
-              // borderRadius: "8px",
-              // boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
               height: "100%",
             }}
           >
