@@ -17,6 +17,10 @@ export const MenuItems = [
     Icon: <FcSalesPerformance style={{ color: colors.SOLUTYICS_PURPLE }} />,
     children: [
       {
+        text: "Sales OverView",
+        to: "sales",
+      },
+      {
         text: "Sales Invoices",
         to: "/get/invoices",
       },
