@@ -556,19 +556,19 @@ const SalesInvoiceInputs = () => {
               </Grid>
 
               <Grid item sx={{ minWidth: 100 }}>
-                <TextField
-                  type="number"
-                  fullWidth
-                  label="Tax"
-                  InputProps={{ readOnly: true }}
-                  value={
-                    item.tax !== undefined && item.name
-                      ? `${item.tax}% (${item.name})`
-                      : `${item.tax ?? 0}%`
-                  }
-                  size="small"
-                />
-              </Grid>
+  <TextField
+    type="text"
+    fullWidth
+    label="Tax"
+    InputProps={{ readOnly: true }}
+    value={
+      item.tax !== undefined && item.tax_name
+        ? `${item.tax}% (${item.tax_name})`
+        : `${item.tax ?? 0}%`
+    }
+    size="small"
+  />
+</Grid>
 
               <Grid item sx={{ minWidth: 100 }}>
                 <Typography fontWeight="bold" color={colors.SOLUTYICS_GRAY}>

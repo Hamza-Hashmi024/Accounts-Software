@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { CreateTax } from "../../thunks/Api";
 import { colors } from "../../Globle/colors";
+import TaxTable from "./TaxTable";
 const Tax = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.Tax);
@@ -138,6 +139,8 @@ const Tax = () => {
             </Box>
           </Grid>
       </Box>
+
+      <TaxTable/>
     </>
   );
 };

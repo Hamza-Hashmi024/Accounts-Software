@@ -276,18 +276,6 @@ export const GetAllProducts = createAsyncThunk(
   }
 );
 
-export const GetTax = createAsyncThunk(
-  "product/getTax",
-  async (_, thunkAPI) => {
-    try {
-      const response = await axios.get(`${BASE_URL}/tax/taxes`);
-      return response.data;
-    } catch (error) {
-      console.error("Error Occurred While Fetching Taxes:", error);
-      return thunkAPI.rejectWithValue("Failed to fetch tax");
-    }
-  }
-);
 
 // Sales Dasborar
 export const GetSalesRevenew = createAsyncThunk(
@@ -421,6 +409,19 @@ export const CreateTax = createAsyncThunk(
       return response.data;
     } catch {
       return rejectWithValue("Failed to create tax");
+    }
+  }
+);
+
+export const GetTax = createAsyncThunk(
+  "product/getTax",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/tax/taxes`);
+      return response.data;
+    } catch (error) {
+      console.error("Error Occurred While Fetching Taxes:", error);
+      return thunkAPI.rejectWithValue("Failed to fetch tax");
     }
   }
 );

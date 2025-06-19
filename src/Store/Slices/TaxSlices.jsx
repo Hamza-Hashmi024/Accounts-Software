@@ -11,6 +11,7 @@ const TaxSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+    // GetAllTax
       .addCase(GetTax.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -23,7 +24,7 @@ const TaxSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Error While Fetching Taxes";
       })
-      //  Create Tax U
+      //  Create Tax ON Product 
       .addCase(CreateTax.pending, (state) =>{
         state.loading = true;
         state.error = null;

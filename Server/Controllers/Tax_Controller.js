@@ -1,7 +1,7 @@
-const db = require("../config/db"); 
+const db = require("../config/db");
 
 const getAllTaxes = (req, res) => {
-  const query = "SELECT id, name, rate FROM taxes";
+  const query = "SELECT id, name, rate , description , created_at FROM taxes";
 
   db.query(query, (err, results) => {
     if (err) {
@@ -11,7 +11,6 @@ const getAllTaxes = (req, res) => {
     res.json(results);
   });
 };
-
 
 const createTax = (req, res) => {
   const { name, rate, description } = req.body;
@@ -23,12 +22,12 @@ const createTax = (req, res) => {
 
   db.query(query, [name, rate, description], (err, results) => {
     if (err) {
-      console.error('Error creating tax:', err.message);
-      return res.status(500).json({ error: 'Failed to create tax record' });
+      console.error("Error creating tax:", err.message);
+      return res.status(500).json({ error: "Failed to create tax record" });
     }
 
     res.status(201).json({
-      message: 'Tax created successfully',
+      message: "Tax created successfully",
       data: {
         id: results.insertId,
         name,
@@ -40,7 +39,8 @@ const createTax = (req, res) => {
 };
 
 
+
 module.exports = {
   getAllTaxes,
-  createTax
+  createTax,
 };
