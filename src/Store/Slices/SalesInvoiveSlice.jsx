@@ -9,6 +9,7 @@ import {
   GetMonthlySalesOverView,
   GetAllSalesInvoice,
   GetSalesInvoicesViewById,
+  DeleteInvoiceById,
 } from "../../thunks/Api";
 
 const SalesInvoiceSlice = createSlice({
@@ -171,6 +172,23 @@ const SalesInvoiceSlice = createSlice({
       })
 
       .addCase(GetSalesInvoicesViewById.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      // Delete Invoice  By ID
+      .addCase(DeleteInvoiceById.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(DeleteInvoiceById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.salesInvoice = state.salesInvoice.filter((item) => {
+          return item.id !== action.payload;
+        });
+      })
+
+      .addCase(DeleteInvoiceById.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
       });

@@ -14,8 +14,9 @@ router.get('/soldproducts' ,  SalesController.TotalProductSold);
 router.get('/totalNumInvoices' , SalesController.GetToatalInvoiceNum);
 router.get('/salesGrowth' ,  SalesController.GetSalesGrowth);
 router.get('/monthlysales' ,  SalesController.MonthlySalesController);
-router.get('/get/Invoices' ,  SalesController.GetAllInvoices)
-router.get('/Invoices/View/:id' ,  SalesController.GetInvoiceById)
+router.get('/get/Invoices' ,  SalesController.GetAllInvoices);
+router.get('/Invoices/View/:id' ,  SalesController.GetInvoiceById);
+router.delete('/delete/invoice/:id' , SalesController.DeleteInvoiceById);
 
 
 

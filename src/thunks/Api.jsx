@@ -1,7 +1,8 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../Globle/Api";
-import { id } from "date-fns/locale";
+
+
 
 export const CreateSalesInvoice = createAsyncThunk(
   "invoice/create",
@@ -59,28 +60,26 @@ export const GetAllSalesInvoice = createAsyncThunk(
   }
 );
 
-// export const GetSalesInvoicesViewById = createAsyncThunk(
-//   "invoice/getSalesInvoicesById",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get(`${BASE_URL}/sales/Invoices/View/${id}`, {
-//       });
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response?.data || error.message);
-//     }
-//   }
-// );
-
-// Customer
-
 export const GetSalesInvoicesViewById = createAsyncThunk(
   "salesInvoice/getById",
   async (id, thunkAPI) => {
     const response = await axios.get(`${BASE_URL}/sales/Invoices/View/${id}`);
-    return  response.data.invoice;; // This will be available as `action.payload`
+    return response.data.invoice; // This will be available as `action.payload`
   }
 );
+
+export const DeleteInvoiceById = createAsyncThunk(
+  "salesInvoice/deleteById",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/sales/delete/invoice/${id}`);
+      return id; // return id for filtering
+    } catch {
+      return thunkAPI.rejectWithValue({ message: "Error deleting invoice" });
+    }
+  }
+);
+
 
 export const CreateCustomer = createAsyncThunk(
   "customer/create",

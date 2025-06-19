@@ -58,6 +58,8 @@ const InvoiceDetail = () => {
     email: "info@solutyics.com",
   };
 
+ 
+
   return (
     <Paper
       elevation={3}
@@ -73,7 +75,11 @@ const InvoiceDetail = () => {
     >
       {/* Company Info */}
       <Box sx={{ mb: 4, textAlign: "center" }}>
-        <Typography variant="h4" fontWeight={800} color={colors.SOLUTYICS_PURPLE}>
+        <Typography
+          variant="h4"
+          fontWeight={800}
+          color={colors.SOLUTYICS_PURPLE}
+        >
           {companyInfo.name}
         </Typography>
         <Typography variant="body2" color={colors.DARK_GRAY}>
@@ -93,8 +99,14 @@ const InvoiceDetail = () => {
             Invoice Details
           </Typography>
           <DetailRow label="Invoice Number" value={invoice.invoice_number} />
-          <DetailRow label="Invoice Date" value={new Date(invoice.invoice_date).toLocaleDateString()} />
-          <DetailRow label="Due Date" value={new Date(invoice.due_date).toLocaleDateString()} />
+          <DetailRow
+            label="Invoice Date"
+            value={new Date(invoice.invoice_date).toLocaleDateString()}
+          />
+          <DetailRow
+            label="Due Date"
+            value={new Date(invoice.due_date).toLocaleDateString()}
+          />
           <DetailRow label="Status" value={invoice.status} />
           <DetailRow label="Reference" value={invoice.reference_number} />
           <DetailRow label="Notes" value={invoice.notes || "-"} />
@@ -167,7 +179,11 @@ const InvoiceDetail = () => {
 // Utility Components
 const DetailRow = ({ label, value }) => (
   <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-    <Typography variant="body2" fontWeight={600} sx={{ color: colors.DARK_GRAY }}>
+    <Typography
+      variant="body2"
+      fontWeight={600}
+      sx={{ color: colors.DARK_GRAY }}
+    >
       {label}:
     </Typography>
     <Typography variant="body2" sx={{ color: colors.BLACK_COLOR }}>

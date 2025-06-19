@@ -400,7 +400,6 @@ const MonthlySalesController = async (req, res) => {
       success: true,
       data: rows,
     });
-
   } catch (error) {
     console.error("Monthly Sales Query Error:", error);
     res.status(500).json({
@@ -410,22 +409,19 @@ const MonthlySalesController = async (req, res) => {
   }
 };
 
-const GetAllInvoices = (req , res ) =>{
-  
-  db.query("SELECT * FROM invoices", (err, result) =>{
-    if (err){
+const GetAllInvoices = (req, res) => {
+  db.query("SELECT * FROM invoices", (err, result) => {
+    if (err) {
       console.error("Error in Get Invoices:", err);
       return res.status(500).json({ error: "Database error", details: err });
-    }else{
+    } else {
       res.status(200).json({
         message: "Invoices retrieved successfully",
-        data: result
-      })
+        data: result,
+      });
     }
-  })
-}
-
-
+  });
+};
 
 const GetInvoiceById = (req, res) => {
   const invoiceId = req.params.id;
@@ -434,73 +430,118 @@ const GetInvoiceById = (req, res) => {
     return res.status(400).json({ message: "Invoice ID is required." });
   }
 
-  db.query(`
+  db.query(
+    `
     SELECT i.*, c.name AS customer_name, c.email AS customer_email, c.phone AS customer_phone
     FROM invoices i
     JOIN customers c ON i.customer_id = c.id
     WHERE i.id = ?
-  `, [invoiceId], (err, invoiceRows) => {
-    if (err) {
-      console.error("GetInvoiceById Error:", err);
-      return res.status(500).json({ message: "Error fetching invoice" });
-    }
+  `,
+    [invoiceId],
+    (err, invoiceRows) => {
+      if (err) {
+        console.error("GetInvoiceById Error:", err);
+        return res.status(500).json({ message: "Error fetching invoice" });
+      }
 
-    if (invoiceRows.length === 0) {
-      return res.status(404).json({ message: "Invoice not found." });
-    }
+      if (invoiceRows.length === 0) {
+        return res.status(404).json({ message: "Invoice not found." });
+      }
 
-    const invoice = invoiceRows[0];
+      const invoice = invoiceRows[0];
 
-    db.query(`
+      db.query(
+        `
       SELECT ii.*, p.name AS product_name 
       FROM invoice_items ii
       JOIN products p ON ii.product_id = p.id
       WHERE ii.invoice_id = ?
-    `, [invoiceId], (err2, itemsRows) => {
-      if (err2) {
-        console.error("GetInvoiceById Error:", err2);
-        return res.status(500).json({ message: "Error fetching invoice items" });
-      }
+    `,
+        [invoiceId],
+        (err2, itemsRows) => {
+          if (err2) {
+            console.error("GetInvoiceById Error:", err2);
+            return res
+              .status(500)
+              .json({ message: "Error fetching invoice items" });
+          }
 
-      const fullInvoice = {
-        id: invoice.id,
-        invoice_number: invoice.invoice_number,
-        invoice_date: invoice.invoice_date,
-        due_date: invoice.due_date,
-        status: invoice.status,
-        reference_number: invoice.reference_number,
-        notes: invoice.notes,
-        subtotal: invoice.subtotal,
-        total_discount: invoice.total_discount,
-        total_tax: invoice.total_tax,
-        shipping_fee: invoice.shipping_fee,
-        grand_total: invoice.grand_total,
-        amount_paid: invoice.amount_paid,
-        amount_due: invoice.amount_due,
-        customer: {
-          id: invoice.customer_id,
-          name: invoice.customer_name,
-          email: invoice.customer_email,
-          phone: invoice.customer_phone
-        },
-        items: itemsRows.map(item => ({
-          id: item.id,
-          product_name: item.product_name,
-          description: item.description,
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-          discount: item.discount,
-          tax: item.tax,
-          line_total: item.line_total
-        }))
-      };
+          const fullInvoice = {
+            id: invoice.id,
+            invoice_number: invoice.invoice_number,
+            invoice_date: invoice.invoice_date,
+            due_date: invoice.due_date,
+            status: invoice.status,
+            reference_number: invoice.reference_number,
+            notes: invoice.notes,
+            subtotal: invoice.subtotal,
+            total_discount: invoice.total_discount,
+            total_tax: invoice.total_tax,
+            shipping_fee: invoice.shipping_fee,
+            grand_total: invoice.grand_total,
+            amount_paid: invoice.amount_paid,
+            amount_due: invoice.amount_due,
+            customer: {
+              id: invoice.customer_id,
+              name: invoice.customer_name,
+              email: invoice.customer_email,
+              phone: invoice.customer_phone,
+            },
+            items: itemsRows.map((item) => ({
+              id: item.id,
+              product_name: item.product_name,
+              description: item.description,
+              quantity: item.quantity,
+              unit_price: item.unit_price,
+              discount: item.discount,
+              tax: item.tax,
+              line_total: item.line_total,
+            })),
+          };
 
-      res.json({ invoice: fullInvoice });
-    });
-  });
+          res.json({ invoice: fullInvoice });
+        }
+      );
+    }
+  );
 };
 
 
+
+const DeleteInvoiceById = (req, res) => {
+  const invoiceId = req.params.id;
+
+  // Step 1: Delete related invoice items
+  db.query("DELETE FROM invoice_items WHERE invoice_id = ?", [invoiceId], (err) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Error deleting invoice items",
+        error: err.message,
+      });
+    }
+
+    // Step 2: Delete the invoice
+    db.query("DELETE FROM invoices WHERE id = ?", [invoiceId], (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          message: "Error deleting invoice",
+          error: err.message,
+        });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          message: "Invoice not found",
+        });
+      }
+
+      res.json({
+        message: "Invoice and related items deleted successfully",
+        id: invoiceId,
+      });
+    });
+  });
+};
 
 
 module.exports = {
@@ -516,6 +557,6 @@ module.exports = {
   GetSalesGrowth,
   MonthlySalesController,
   GetAllInvoices,
-  GetInvoiceById
+  GetInvoiceById,
+  DeleteInvoiceById,
 };
-

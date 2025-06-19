@@ -20,7 +20,9 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../Globle/colors";
-import { GetAllSalesInvoice } from "../../thunks/Api";
+import { GetAllSalesInvoice ,DeleteInvoiceById } from "../../thunks/Api";
+import InvoiceDetail from "./InvoiceDetail";
+import { id } from "date-fns/locale";
 
 
 const Invoices = () => {
@@ -39,6 +41,12 @@ const Invoices = () => {
   useEffect(() => {
     dispatch(GetAllSalesInvoice());
   }, [dispatch]);
+
+const handleDelete = (id) => {
+  if (window.confirm("Are you sure you want to delete this invoice?")) {
+    dispatch(DeleteInvoiceById(id));
+  }
+};
 
   // Filter logic
   const filteredInvoices = salesInvoice?.filter((invoice) => {
@@ -164,6 +172,7 @@ const Invoices = () => {
                       alignItems: "center",
                       gap: 1,
                     }}
+                   onClick={() => handleDelete(invoice.id)}
                   >
                     <MdDelete /> Delete
                   </TableCell>
