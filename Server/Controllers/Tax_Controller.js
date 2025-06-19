@@ -38,9 +38,23 @@ const createTax = (req, res) => {
   });
 };
 
+const UpdateTax = (req, res) => {
+  const { id } = req.params;
+  const { name, rate, description } = req.body;
 
+  const query = `UPDATE taxes SET name = ?, rate = ?, description = ? WHERE id = ?`;
+  db.query(query, [name, rate, description, id], (err, results) => {
+    if (err) {
+      console.log("Error Occurred While Updating Tax", err);
+      return res.status(500).json({ error: "Failed to Update Tax Record" });
+    } else {
+      res.json({ message: "Tax Updated Successfully", data: results });
+    }
+  });
+};
 
 module.exports = {
   getAllTaxes,
   createTax,
+  UpdateTax
 };

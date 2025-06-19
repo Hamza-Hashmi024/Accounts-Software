@@ -2,8 +2,6 @@ import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../Globle/Api";
 
-
-
 export const CreateSalesInvoice = createAsyncThunk(
   "invoice/create",
   async (payload, { rejectWithValue }) => {
@@ -72,14 +70,15 @@ export const DeleteInvoiceById = createAsyncThunk(
   "salesInvoice/deleteById",
   async (id, thunkAPI) => {
     try {
-      const response = await axios.delete(`${BASE_URL}/sales/delete/invoice/${id}`);
+      const response = await axios.delete(
+        `${BASE_URL}/sales/delete/invoice/${id}`
+      );
       return id; // return id for filtering
     } catch {
       return thunkAPI.rejectWithValue({ message: "Error deleting invoice" });
     }
   }
 );
-
 
 export const CreateCustomer = createAsyncThunk(
   "customer/create",
@@ -276,7 +275,6 @@ export const GetAllProducts = createAsyncThunk(
   }
 );
 
-
 // Sales Dasborar
 export const GetSalesRevenew = createAsyncThunk(
   "sales/getSalesRevenew",
@@ -422,6 +420,19 @@ export const GetTax = createAsyncThunk(
     } catch (error) {
       console.error("Error Occurred While Fetching Taxes:", error);
       return thunkAPI.rejectWithValue("Failed to fetch tax");
+    }
+  }
+);
+
+
+export const UpdateTax = createAsyncThunk(
+  "taxes/UpdateTax",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/tax/update/${data.id}`, data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue("Failed to update tax" , err);
     }
   }
 );
