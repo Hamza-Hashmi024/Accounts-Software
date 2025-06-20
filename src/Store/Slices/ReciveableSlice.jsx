@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetReciveAble } from "../../thunks/Api";
+import { GetReciveAble, GetCreditInvoices } from "../../thunks/Api";
 
 const ReceivableSlice = createSlice({
   name: "Receivable",
@@ -20,6 +20,20 @@ const ReceivableSlice = createSlice({
         state.receivable = action.payload;
       })
       .addCase(GetReciveAble.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error?.message || "Something went wrong";
+      })
+
+      // Get Credit Invoices only
+      .addCase(GetCreditInvoices.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GetCreditInvoices.fulfilled, (state, action) => {
+        state.loading = false;
+        state.receivable = action.payload;
+      })
+      .addCase(GetCreditInvoices.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error?.message || "Something went wrong";
       });

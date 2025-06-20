@@ -375,7 +375,7 @@ export const GetProductSalesOverView = createAsyncThunk(
     }
   }
 );
-
+//  RecivAble Api 
 export const GetReciveAble = createAsyncThunk(
   "Receivable/GetReciveAble",
   async (filters, { rejectWithValue }) => {
@@ -398,6 +398,19 @@ export const GetReciveAble = createAsyncThunk(
     }
   }
 );
+
+
+export const GetCreditInvoices = createAsyncThunk(
+  "CreditInvoices/GetCreditInvoices",
+  async (filters, { rejectWithValue }) =>{
+    try{
+      const response = await axios.get(`${BASE_URL}/reciveable/`);
+      return response.data;
+    }catch{
+      return rejectWithValue("Failed to fetch credit invoices");
+    }
+  }
+)
 
 export const CreateTax = createAsyncThunk(
   "taxes/CreateTax",
